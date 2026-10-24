@@ -1,12 +1,10 @@
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
+const request = require('supertest');
+const app = require('./server');
 
-app.get('/', (req, res) => {
-  res.status(200).json({ message: "Hello from CI/CD Pipeline!" });
+describe('GET /', () => {
+  it('should return status 200 and success message', async () => {
+    const res = await request(app).get('/');
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('message', 'Hello from CI/CD Pipeline!');
+  });
 });
-
-if (require.main === module) {
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-}
-module.exports = app;
